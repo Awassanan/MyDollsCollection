@@ -1,4 +1,4 @@
-# My Doll Collection API
+# My Dolls Collection API
 
 This is my simple API project, named "My Dolls Collection". developed as part of the Golang Course by bornToDev.
 
