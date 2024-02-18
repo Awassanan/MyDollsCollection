@@ -1,9 +1,11 @@
-This is my simple API called "My Doll Collection".
-This project is a part of Golang-Course By bornToDev.
+# My Doll Collection API
 
-This API has 4 basic HTTP methods: GET, POST, PUT, DELETE and here are features that this API can do
-1. GET list of all dolls
-2. GET a doll detail by id
-3. POST new doll
-4. UPDATE doll data by id
-5. DELETE doll by id (donate doll)
+This is my simple API project, named "My Dolls Collection". developed as part of the Golang Course by bornToDev.
+
+This API supports 4 basic HTTP methods: GET, POST, PUT, DELETE, and includes the following features:
+
+1. **GET**: Retrieve a list of all dolls.
+2. **GET**: Retrieve detailed information about a doll by its ID.
+3. **POST**: Add a new doll to the collection.
+4. **PUT**: Update doll data using its ID.
+5. **DELETE**: Remove a doll from the collection by its ID (donate doll).
