@@ -61,6 +61,8 @@ func getDoll(dollID int) (*Doll, error) {
 		return nil, err
 	}
 
+	// default time.Time format in Go is --> RFC3339 = "2006-01-02T15:04:05Z07:00"
+	// But DATETIME default format in mySQL is --> DateTime = "2006-01-02 15:04:05"
 	doll.BuyDate, err = time.Parse("2006-01-02 15:04:05", buyDate)
 	if err != nil {
 		log.Println(err.Error())
@@ -101,6 +103,8 @@ func getDollList() ([]Doll, error) {
 			&doll.AnimalType,
 			&buyDate)
 
+		// default time.Time format in Go is --> RFC3339 = "2006-01-02T15:04:05Z07:00"
+		// But DATETIME default format in mySQL is --> DateTime = "2006-01-02 15:04:05"
 		doll.BuyDate, err = time.Parse("2006-01-02 15:04:05", buyDate)
 		if err != nil {
 			log.Println(err.Error())
@@ -126,6 +130,9 @@ func newDoll(doll Doll) (int, error) {
 		doll.Name,
 		doll.Price,
 		doll.AnimalType,
+
+		// default time.Time format in Go is --> RFC3339 = "2006-01-02T15:04:05Z07:00"
+		// But DATETIME default format in mySQL is --> DateTime = "2006-01-02 15:04:05"
 		doll.BuyDate.Format("2006-01-02 15:04:05"))
 
 	if err != nil {
@@ -155,7 +162,11 @@ func updateDoll(doll Doll, dollID int) error {
 		doll.Name,
 		doll.Price,
 		doll.AnimalType,
+
+		// default time.Time format in Go is --> RFC3339 = "2006-01-02T15:04:05Z07:00"
+		// But DATETIME default format in mySQL is --> DateTime = "2006-01-02 15:04:05"
 		doll.BuyDate.Format("2006-01-02 15:04:05"),
+
 		dollID)
 
 	if err != nil {
