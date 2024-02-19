@@ -261,7 +261,7 @@ func handleDoll(w http.ResponseWriter, r *http.Request) {
 		}
 
 		if doll == nil {
-			w.WriteHeader(http.StatusNoContent)
+			w.WriteHeader(http.StatusNotFound)
 			return
 		}
 
