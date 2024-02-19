@@ -153,7 +153,14 @@ func updateDoll(doll Doll, dollID int) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
-	_, err := Db.ExecContext(ctx, `UPDATE dolls
+	founddoll, err := getDoll(dollID)
+	if founddoll == nil {
+		return fmt.Errorf("dollID %d not found for updating data", dollID)
+	} else if founddoll != nil && err != nil {
+		return err
+	}
+
+	_, err = Db.ExecContext(ctx, `UPDATE dolls
 	SET name = ?,
 	price = ? ,
 	animal_type = ? ,
@@ -181,7 +188,14 @@ func donateDoll(dollID int) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
-	_, err := Db.ExecContext(ctx, `DELETE FROM dolls WHERE id = ?`, dollID)
+	founddoll, err := getDoll(dollID)
+	if founddoll == nil {
+		return fmt.Errorf("dollID %d not found for deleting data", dollID)
+	} else if founddoll != nil && err != nil {
+		return err
+	}
+
+	_, err = Db.ExecContext(ctx, `DELETE FROM dolls WHERE id = ?`, dollID)
 
 	if err != nil {
 		log.Println(err.Error())
@@ -288,8 +302,12 @@ func handleDoll(w http.ResponseWriter, r *http.Request) {
 
 		err = updateDoll(doll, dollID)
 		if err != nil {
-			log.Println(err.Error())
-			w.WriteHeader(http.StatusBadRequest)
+			log.Println(err)
+			if err.Error() == fmt.Sprintf("dollID %d not found for updating data", dollID) {
+				w.WriteHeader(http.StatusNotFound)
+			} else {
+				w.WriteHeader(http.StatusInternalServerError)
+			}
 			return
 		}
 
@@ -299,7 +317,11 @@ func handleDoll(w http.ResponseWriter, r *http.Request) {
 		err := donateDoll(dollID)
 		if err != nil {
 			log.Println(err)
-			w.WriteHeader(http.StatusInternalServerError)
+			if err.Error() == fmt.Sprintf("dollID %d not found for deleting data", dollID) {
+				w.WriteHeader(http.StatusNotFound)
+			} else {
+				w.WriteHeader(http.StatusInternalServerError)
+			}
 			return
 		}
 
